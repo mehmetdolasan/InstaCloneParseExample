@@ -60,5 +60,7 @@ public class FeedActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.listView);
 
+
+
     }
 }
