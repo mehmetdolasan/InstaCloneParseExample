@@ -30,6 +30,8 @@ public class FeedActivity extends AppCompatActivity {
 
         if(item.getItemId() == R.id.add_post){
             //intent
+            Intent intent = new Intent(getApplicationContext(),UploadActivity.class);
+            startActivity(intent);
         }else if (item.getItemId() == R.id.log_out){
             ParseUser.logOutInBackground(new LogOutCallback() {
                 @Override
