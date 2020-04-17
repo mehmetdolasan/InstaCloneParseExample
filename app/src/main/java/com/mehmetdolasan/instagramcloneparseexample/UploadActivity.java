@@ -18,14 +18,22 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class UploadActivity extends AppCompatActivity {
 
     EditText commentText;
     ImageView imageView;
-
+    Bitmap chosenImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +45,29 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     public void upload(View view){
+        String comment = commentText.getText().toString();
 
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        chosenImage.compress(Bitmap.CompressFormat.PNG,50,byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        ParseFile parseFile = new ParseFile("image.png",bytes);
+
+        ParseObject object = new ParseObject("Posts");
+        object.put("image",parseFile);
+        object.put("comment",comment);
+        object.put("username", ParseUser.getCurrentUser().getUsername());
+        object.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e != null){
+                    Toast.makeText(getApplicationContext(),e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Post Uploaded!!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(),FeedActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
     }
     public void chooseImage(View view){
@@ -76,11 +106,11 @@ public class UploadActivity extends AppCompatActivity {
             try {
                 if(Build.VERSION.SDK_INT >= 28){
                     ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(),imageData);
-                    Bitmap bitmap = ImageDecoder.decodeBitmap(source);
-                    imageView.setImageBitmap(bitmap);
+                    chosenImage = ImageDecoder.decodeBitmap(source);
+                    imageView.setImageBitmap(chosenImage);
                 }else{
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageData);
-                    imageView.setImageBitmap(bitmap);
+                    chosenImage = MediaStore.Images.Media.getBitmap(this.getContentResolver(),imageData);
+                    imageView.setImageBitmap(chosenImage);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
