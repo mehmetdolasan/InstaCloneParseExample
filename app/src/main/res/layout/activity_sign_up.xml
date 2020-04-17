@@ -27,6 +27,7 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPersonName"
+        android:password="true"
         app:layout_constraintBottom_toTopOf="@+id/sign_up_activity_sign_up_button"
         app:layout_constraintEnd_toEndOf="@+id/sign_up_activity_sign_up_button" />
 
