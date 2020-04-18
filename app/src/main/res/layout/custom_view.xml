@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="username text"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:paddingLeft="12dp"/>
 
     <ImageView
         android:id="@+id/custom_view_imageview"
@@ -26,5 +27,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="comment"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:paddingLeft="12dp"/>
 </LinearLayout>
